@@ -9,3 +9,9 @@ variable "clusterName" {
   type        = string
   default     = "kitops-eks"
 }
+
+variable "clusterNamess" {
+  description = "Name of the EKS cluster"
+  type        = string
+  default     = "kitops-eks"
+}
