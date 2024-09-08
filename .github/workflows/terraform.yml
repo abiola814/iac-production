@@ -56,7 +56,7 @@ jobs:
       - name: Apply Terraform deployment
         id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: terraform destroy -auto-approve
 
       - name: Get Kube Config File
         id: getconfig
