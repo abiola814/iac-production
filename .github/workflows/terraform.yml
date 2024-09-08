@@ -58,7 +58,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform destroy -auto-approve
 
-      - name: Get Kube Config File
+      - name: Get Kube Config Files
         id: getconfig
         if: steps.apply.outcome == 'success'
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER }}
