@@ -27,7 +27,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "cf-templates-1driz8retshfn-us-east-1"
+    bucket = "micro-bucket-01"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }

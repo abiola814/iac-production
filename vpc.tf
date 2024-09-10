@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
 
-  name = "wiremi-eks"
+  name = "wiremi-eks-02"
 
   cidr = "172.20.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -49,7 +49,14 @@ resource "aws_route" "k8s_to_rds_routes" {
 }
 
 resource "aws_route" "rds_to_k8s_route" {
-  route_table_id            = "rtb-05a27aa678ede4894"
+  route_table_id            = "rtb-0de7c879ca832a64e"
   destination_cidr_block    = "172.20.0.0/16"
   vpc_peering_connection_id = aws_vpc_peering_connection.k8s_to_rds.id
 }
+resource "aws_route" "rds_to_k8s_route02" {
+  route_table_id            = "rtb-0100078ab89d06d89"
+  destination_cidr_block    = "172.20.0.0/16"
+  vpc_peering_connection_id = aws_vpc_peering_connection.k8s_to_rds.id
+}
+
+#rtb-0100078ab89d06d89
