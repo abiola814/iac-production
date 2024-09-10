@@ -27,10 +27,10 @@ module "vpc" {
 
 data "aws_caller_identity" "current" {}
 
-# VPC Peering Connection between Kubernetes VPC and RDS VPC
+
 resource "aws_vpc_peering_connection" "k8s_to_rds" {
-  vpc_id        = module.vpc.vpc_id              # Kubernetes VPC
-  peer_vpc_id   = "vpc-0775131494c3a3065"        # RDS VPC ID
+  vpc_id        = module.vpc.vpc_id
+  peer_vpc_id   = "vpc-0775131494c3a3065"
   peer_owner_id = data.aws_caller_identity.current.account_id
 
   auto_accept = true
@@ -42,14 +42,14 @@ resource "aws_vpc_peering_connection" "k8s_to_rds" {
 
 
 resource "aws_route" "k8s_to_rds_routes" {
-  for_each                = toset(module.vpc.private_route_table_ids)
-  route_table_id          = each.value                             # Use each private route table associated with Kubernetes VPC
-  destination_cidr_block  = "10.0.0.0/16"                          # RDS VPC CIDR
+  count                  = length(module.vpc.private_route_table_ids)
+  route_table_id          = module.vpc.private_route_table_ids[count.index]  # Iterate over all private route tables
+  destination_cidr_block  = "10.0.0.0/16"                                   # RDS VPC CIDR
   vpc_peering_connection_id = aws_vpc_peering_connection.k8s_to_rds.id
 }
-# Route in RDS VPC to route traffic to Kubernetes VPC
+
 resource "aws_route" "rds_to_k8s_route" {
-  route_table_id         = "rtb-05a27aa678ede4894"                 # RDS VPC private route table
-  destination_cidr_block = module.vpc.cidr                         # Kubernetes VPC CIDR block
+  route_table_id            = "rtb-05a27aa678ede4894"
+  destination_cidr_block    = "172.20.0.0/16"
   vpc_peering_connection_id = aws_vpc_peering_connection.k8s_to_rds.id
 }
