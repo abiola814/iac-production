@@ -42,9 +42,9 @@ resource "aws_vpc_peering_connection" "k8s_to_rds" {
 
 
 resource "aws_route" "k8s_to_rds_routes" {
-  count                  = length(module.vpc.private_route_table_ids)
-  route_table_id          = module.vpc.private_route_table_ids[count.index]  # Iterate over all private route tables
-  destination_cidr_block  = "10.0.0.0/16"                                   # RDS VPC CIDR
+  count                     = length(module.vpc.private_route_table_ids)
+  route_table_id            = module.vpc.private_route_table_ids[count.index] # Iterate over all private route tables
+  destination_cidr_block    = "10.0.0.0/16"                                   # RDS VPC CIDR
   vpc_peering_connection_id = aws_vpc_peering_connection.k8s_to_rds.id
 }
 
