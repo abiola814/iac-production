@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
 
-  name = "wiremi-eks-02"
+  name = "wiremi-eks"
 
   cidr = "172.20.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
